@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recipesClicked(View view) {
+        
     }
 
     public void partsClicked(View view) {
