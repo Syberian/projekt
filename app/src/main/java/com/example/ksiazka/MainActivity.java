@@ -2,6 +2,7 @@ package com.example.ksiazka;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void recipesClicked(View view) {
-        
+        Intent intent = new Intent(MainActivity.this, Recipes.class);
+        startActivity(intent);
     }
 
     public void partsClicked(View view) {
