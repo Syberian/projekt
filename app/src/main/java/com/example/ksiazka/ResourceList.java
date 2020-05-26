@@ -1,22 +1,18 @@
 package com.example.ksiazka;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-public class editScreen extends AppCompatActivity {
+public class ResourceList extends AppCompatActivity {
 
-    private Button saveButton, deleteButton;
-    private EditText editItem;
     private DatabaseSystem databaseSystem;
     private ListView listView;
     private String selectedItemName;
@@ -25,40 +21,18 @@ public class editScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_screen);
-
-        saveButton = (Button)findViewById(R.id.saveButton);
-        deleteButton = (Button)findViewById(R.id.deleteButton);
-        editItem = (EditText) findViewById(R.id.editItem);
+        setContentView(R.layout.activity_resource_list);
         listView = (ListView)findViewById(R.id.skladnikiList);
         databaseSystem = new DatabaseSystem(this);
         Intent getIntentData = getIntent();
         selectedItemId = getIntentData.getIntExtra("id", -1);
         selectedItemName = getIntentData.getStringExtra("name");
-        editItem.setText(selectedItemName);
         getList();
-    }
-
-    public void deleteClicked(View view) {
-        databaseSystem.deleteName(selectedItemId, selectedItemName);
-        editItem.setText("");
-        Intent y = new Intent(editScreen.this, Recipes.class);
-        startActivity(y);
-    }
-
-    public void saveClicked(View view) {
-        String item = editItem.getText().toString();
-        if(!item.equals(""))
-        {
-            databaseSystem.updateName(item, selectedItemId, selectedItemName);
-            Intent x = new Intent(editScreen.this, Recipes.class);
-            startActivity(x);
-        }
     }
 
     public void addButtonClicked(View view)
     {
-        Intent x = new Intent(editScreen.this, AddResource.class);
+        Intent x = new Intent(ResourceList.this, AddResource.class);
         x.putExtra("id", selectedItemId);
         x.putExtra("name", selectedItemName);
         startActivity(x);
@@ -70,7 +44,7 @@ public class editScreen extends AppCompatActivity {
         ArrayList<Skladnik> daneListy = new ArrayList<Skladnik>();
         while(data.moveToNext())
         {
-            daneListy.add(new Skladnik(data.getString(2), data.getString(3)));
+            daneListy.add(new Skladnik(data.getString(1), data.getString(2)));
         }
         SkladnikAdapter adap = new SkladnikAdapter(this, R.layout.adapter_view_layout, daneListy);
         listView.setAdapter(adap);
@@ -80,7 +54,7 @@ public class editScreen extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = ((Skladnik)parent.getItemAtPosition(position)).nazwa;
-                Cursor data = databaseSystem.getRecipeItemsId(name);
+                Cursor data = databaseSystem.getRecourceId(name);
 
                 int itemId = -1;
 
@@ -91,7 +65,7 @@ public class editScreen extends AppCompatActivity {
 
                 if(itemId > -1)
                 {
-                    databaseSystem.deleteRecipeItemsData(itemId, name);
+                    databaseSystem.deleteRecourcesData(itemId, name);
                     finish();
                     startActivity(getIntent());
 

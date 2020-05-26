@@ -23,12 +23,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void partsClicked(View view) {
+        Intent intent = new Intent(MainActivity.this, ResourceList.class);
+        startActivity(intent);
     }
 
     public void shoppingClicked(View view) {
     }
 
     public void quitClicked(View view) {
+        finish();
+        System.exit(0);
     }
 
     public void clearData(View view) {

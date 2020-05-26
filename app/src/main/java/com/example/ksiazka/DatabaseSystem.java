@@ -29,15 +29,17 @@ public class DatabaseSystem extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (Id INTEGER PRIMARY KEY AUTOINCREMENT, " + COL1 + " TEXT UNIQUE)";
         String createSecondTable = "CREATE TABLE PrzepisItem (Id INTEGER PRIMARY KEY AUTOINCREMENT, PrzepisId INTEGER, Nazwa TEXT UNIQUE, Ilosc TEXT)";
-
+        String createThirdTable = "CREATE TABLE ResourcesList (Id INTEGER PRIMARY KEY AUTOINCREMENT, Nazwa TEXT UNIQUE, Ilosc TEXT)";
         db.execSQL(createTable);
         db.execSQL(createSecondTable);
+        db.execSQL(createThirdTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS PrzepisItem");
+        db.execSQL("DROP TABLE IF EXISTS ResourcesList");
 
         onCreate(db);
     }
@@ -66,7 +68,18 @@ public class DatabaseSystem extends SQLiteOpenHelper
         else
             return true;
     }
-
+    public boolean addDataToResourcesList(String name, String amount)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("Nazwa", name);
+        contentValues.put("Ilosc", amount);
+        long result = db.insert("RecourcesList", null, contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
     public Cursor getData()
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -81,14 +94,21 @@ public class DatabaseSystem extends SQLiteOpenHelper
         Cursor x = db.rawQuery(query, null);
         return x;
     }
-    public Cursor getResourcesData(int id)
+    public Cursor getRecourceId(String name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM RecourcesList WHERE Nazwa ='" + name + "'";
+        Cursor x = db.rawQuery(query, null);
+        return x;
+    }
+    public Cursor getRecipeItemsData(int id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM PrzepisItem WHERE PrzepisId ='" + id + "'";
         Cursor data = db.rawQuery(query, null);
         return data;
     }
-    public Cursor getResourcesId(String name)
+    public Cursor getRecipeItemsId(String name)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM PrzepisItem WHERE Nazwa = '" + name + "'";
@@ -108,10 +128,16 @@ public class DatabaseSystem extends SQLiteOpenHelper
         String query = "DELETE FROM " + TABLE_NAME + " WHERE Id='" + id + "'" + " AND " + COL1 + " = '" + name + "'";
         db.execSQL(query);
     }
-    public void deleteResource(int id, String name)
+    public void deleteRecipeItemsData(int id, String name)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM PrzepisItem WHERE Id='" + id + "' AND " + "Nazwa ='" + name + "'";
+        db.execSQL(query);
+    }
+    public void deleteRecourcesData(int id, String name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM RecourcesList WHERE Id='" + id + "' AND " + "Nazwa ='" + name + "'";
         db.execSQL(query);
     }
     public void clearDatabase()
