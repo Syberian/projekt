@@ -1,16 +1,19 @@
 package com.example.ksiazka;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,12 +38,11 @@ public class editScreen extends AppCompatActivity {
         editItem = (EditText) findViewById(R.id.editItem);
         listView = (ListView)findViewById(R.id.skladnikiList);
         databaseSystem = new DatabaseSystem(this);
-
+        registerForContextMenu(listView);
         Intent getIntentData = getIntent();
         selectedItemId = getIntentData.getIntExtra("id", -1);
         selectedItemName = getIntentData.getStringExtra("name");
         editItem.setText(selectedItemName);
-
         getList();
     }
 
@@ -71,7 +73,7 @@ public class editScreen extends AppCompatActivity {
 
     public void getList()
     {
-        Cursor data = databaseSystem.getItemData(selectedItemId);
+        Cursor data = databaseSystem.getResourcesData(selectedItemId);
         ArrayList<Skladnik> daneListy = new ArrayList<Skladnik>();
         while(data.moveToNext())
         {
@@ -84,22 +86,29 @@ public class editScreen extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = parent.getItemAtPosition(position).toString();
-                Cursor data = databaseSystem.getItemId(name);
+                String name = ((Skladnik)parent.getItemAtPosition(position)).nazwa;
+
+                Toast y = Toast.makeText(editScreen.this, name, Toast.LENGTH_SHORT);
+                y.show();
+                Cursor data = databaseSystem.getResourcesId(name);
+
                 int itemId = -1;
+
                 while(data.moveToNext())
                 {
                     itemId = data.getInt(0);
                 }
+
                 if(itemId > -1)
                 {
-                    /*
-                    Intent editInt = new Intent(Recipes.this, editScreen.class);
-                    editInt.putExtra("id", itemId);
-                    editInt.putExtra("name", name);
-                    startActivity(editInt);*/
+                    databaseSystem.deleteResource(itemId, name);
+                    finish();
+                    startActivity(getIntent());
+
                 }
             }
         });
+
+
     }
 }

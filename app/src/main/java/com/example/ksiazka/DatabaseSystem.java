@@ -74,18 +74,24 @@ public class DatabaseSystem extends SQLiteOpenHelper
         Cursor data = db.rawQuery(query, null);
         return data;
     }
-    public Cursor getItemData(int id)
+    public Cursor getItemId(String name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL1 + " = '" + name + "'";
+        Cursor x = db.rawQuery(query, null);
+        return x;
+    }
+    public Cursor getResourcesData(int id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM PrzepisItem WHERE PrzepisId ='" + id + "'";
         Cursor data = db.rawQuery(query, null);
         return data;
     }
-
-    public Cursor getItemId(String name)
+    public Cursor getResourcesId(String name)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL1 + " = '" + name + "'";
+        String query = "SELECT * FROM PrzepisItem WHERE Nazwa = '" + name + "'";
         Cursor x = db.rawQuery(query, null);
         return x;
     }
@@ -102,7 +108,12 @@ public class DatabaseSystem extends SQLiteOpenHelper
         String query = "DELETE FROM " + TABLE_NAME + " WHERE Id='" + id + "'" + " AND " + COL1 + " = '" + name + "'";
         db.execSQL(query);
     }
-
+    public void deleteResource(int id, String name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM PrzepisItem WHERE Id='" + id + "' AND " + "Nazwa ='" + name + "'";
+        db.execSQL(query);
+    }
     public void clearDatabase()
     {
         SQLiteDatabase db = this.getWritableDatabase();
