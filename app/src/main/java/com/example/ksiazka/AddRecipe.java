@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddRecipe extends AppCompatActivity {
 
@@ -25,9 +26,19 @@ public class AddRecipe extends AppCompatActivity {
     {
         if(nazwa.length() != 0)
         {
-            databaseSystem.addDataToPrzepis(nazwa.getText().toString());
-            Intent intent = new Intent(AddRecipe.this, Recipes.class);
-            startActivity(intent);
+            if(databaseSystem.addDataToPrzepis(nazwa.getText().toString()))
+            {
+                Toast x = Toast.makeText(AddRecipe.this, "Pomyślnie dodano recepturę!", Toast.LENGTH_SHORT);
+                x.show();
+                Intent intent = new Intent(AddRecipe.this, Recipes.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Toast x = Toast.makeText(AddRecipe.this, "Nie można dodać tej receptury!", Toast.LENGTH_SHORT);
+                x.show();
+            }
+
         }
     }
 }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
-        android:onClick="dodajPrzepis"
+        android:onClick="showAddRecipes"
         android:text="Dodaj nowy przepis"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

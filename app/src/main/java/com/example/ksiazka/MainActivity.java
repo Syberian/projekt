@@ -8,10 +8,13 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    DatabaseSystem databaseSystem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        databaseSystem = new DatabaseSystem(this);
     }
 
     public void recipesClicked(View view) {
@@ -26,5 +29,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void quitClicked(View view) {
+    }
+
+    public void clearData(View view) {
+        databaseSystem.clearDatabase();
     }
 }

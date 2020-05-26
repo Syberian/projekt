@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -26,8 +27,8 @@ public class DatabaseSystem extends SQLiteOpenHelper
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (Id INTEGER PRIMARY KEY AUTOINCREMENT, " + COL1 + " TEXT)";
-        String createSecondTable = "CREATE TABLE PrzepisItem (Id INTEGER PRIMARY KEY AUTOINCREMENT, PrzepisId INTEGER, Nazwa TEXT, Ilosc TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (Id INTEGER PRIMARY KEY AUTOINCREMENT, " + COL1 + " TEXT UNIQUE)";
+        String createSecondTable = "CREATE TABLE PrzepisItem (Id INTEGER PRIMARY KEY AUTOINCREMENT, PrzepisId INTEGER, Nazwa TEXT UNIQUE, Ilosc TEXT)";
 
         db.execSQL(createTable);
         db.execSQL(createSecondTable);
@@ -41,33 +42,74 @@ public class DatabaseSystem extends SQLiteOpenHelper
         onCreate(db);
     }
 
-    public void addDataToPrzepis(String name)
+    public boolean addDataToPrzepis(String name)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        String insertInto = "INSERT INTO " + TABLE_NAME + " (nazwa) VALUES ('" + name + "')";
-        db.execSQL(insertInto);
-
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("nazwa", name);
+        long result = db.insert(TABLE_NAME, null, contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
-    public void addItemDataToPrzepis(int id, String name, int amount)
+    public boolean addItemDataToPrzepis(int id, String name, String amount)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        String insertInto = "INSERT INTO PrzepisItem(PrzepisId, Nazwa, Ilosc) VALUES("+id+","+ name+","+amount+")";
-        db.execSQL(insertInto);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("PrzepisId", id);
+        contentValues.put("Nazwa", name);
+        contentValues.put("Ilosc", amount);
+        long result = db.insert("PrzepisItem", null, contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
 
-    public void deleteItem(String getID)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE Id = '" +getID+"'");
-    }
-
-    public Cursor pobierzDane()
+    public Cursor getData()
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
         return data;
+    }
+    public Cursor getItemData(int id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM PrzepisItem WHERE PrzepisId ='" + id + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getItemId(String name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COL1 + " = '" + name + "'";
+        Cursor x = db.rawQuery(query, null);
+        return x;
+    }
+    public void updateName(String newName, int id, String oldName)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_NAME + " SET " + COL1 + " = '" + newName + "' WHERE Id ='" + id + "'" + " AND " + COL1 + " = '" + oldName + "'";
+        db.execSQL(query);
+    }
+
+    public void deleteName(int id, String name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE Id='" + id + "'" + " AND " + COL1 + " = '" + name + "'";
+        db.execSQL(query);
+    }
+
+    public void clearDatabase()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_NAME;
+        db.execSQL(query);
+
+        query = "DELETE FROM PrzepisItem";
+        db.execSQL(query);
     }
 }
