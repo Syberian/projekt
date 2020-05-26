@@ -21,14 +21,14 @@ public class AddRecipe extends AppCompatActivity {
         databaseSystem = new DatabaseSystem(this);
 
     }
-
+    // Obsluzenie klikniecia w przycisk dalej
     public void dalejClicked(View view)
     {
         if(nazwa.length() != 0)
         {
             if(databaseSystem.addDataToPrzepis(nazwa.getText().toString()))
             {
-                Toast x = Toast.makeText(AddRecipe.this, "Pomyślnie dodano recepturę!", Toast.LENGTH_SHORT);
+                Toast x = Toast.makeText(AddRecipe.this, "Pomyślnie dodano recepturę!", Toast.LENGTH_SHORT);  // Utworzenie komunikatu
                 x.show();
                 Intent intent = new Intent(AddRecipe.this, Recipes.class);
                 startActivity(intent);

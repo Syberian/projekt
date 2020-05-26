@@ -24,27 +24,23 @@ public class ResourceList extends AppCompatActivity {
         setContentView(R.layout.activity_resource_list);
         listView = (ListView)findViewById(R.id.skladnikiList);
         databaseSystem = new DatabaseSystem(this);
-        Intent getIntentData = getIntent();
-        selectedItemId = getIntentData.getIntExtra("id", -1);
-        selectedItemName = getIntentData.getStringExtra("name");
-        getList();
+        getList();  /// Pobranie listy danych
     }
 
+    // Obsluzenie dodawania nowych skladników
     public void addButtonClicked(View view)
     {
-        Intent x = new Intent(ResourceList.this, AddResource.class);
-        x.putExtra("id", selectedItemId);
-        x.putExtra("name", selectedItemName);
+        Intent x = new Intent(ResourceList.this, AddItemToRecourceList.class);
         startActivity(x);
     }
-
+    // Pobieranie listy składników z bazy
     public void getList()
     {
-        Cursor data = databaseSystem.getRecipeItemsData(selectedItemId);
+        Cursor data = databaseSystem.getResourcesItemsData();
         ArrayList<Skladnik> daneListy = new ArrayList<Skladnik>();
         while(data.moveToNext())
         {
-            daneListy.add(new Skladnik(data.getString(1), data.getString(2)));
+            daneListy.add(new Skladnik(data.getString(1), data.getString(2))); // Wyciagniecie z tabeli odpowiednio Nazwy i Ilosci produktu
         }
         SkladnikAdapter adap = new SkladnikAdapter(this, R.layout.adapter_view_layout, daneListy);
         listView.setAdapter(adap);

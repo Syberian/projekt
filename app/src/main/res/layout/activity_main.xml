@@ -30,8 +30,6 @@
         android:backgroundTint="#AD6989"
         android:onClick="recipesClicked"
         android:text="Przepisy"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -39,39 +37,25 @@
         android:id="@+id/button3"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="244dp"
+        android:layout_marginTop="100dp"
         android:backgroundTint="#FFA299"
         android:onClick="partsClicked"
         android:text="Składniki"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="64dp"
-        android:backgroundTint="#D291BC"
-        android:onClick="shoppingClicked"
-        android:text="Lista zakupów"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginTop="84dp"
         android:backgroundTint="#FEE2B3"
         android:onClick="quitClicked"
         android:text="Wyjście"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
         android:id="@+id/button7"
@@ -124,15 +108,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_star_big_on" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/abc_vector_test"
-        tools:layout_editor_absoluteY="647dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

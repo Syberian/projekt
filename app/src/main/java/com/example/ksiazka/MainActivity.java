@@ -17,24 +17,22 @@ public class MainActivity extends AppCompatActivity {
         databaseSystem = new DatabaseSystem(this);
     }
 
+    // Klikniecie w przycisk "Przepisy"
     public void recipesClicked(View view) {
         Intent intent = new Intent(MainActivity.this, Recipes.class);
         startActivity(intent);
     }
-
+    // Klikniecie w przycisk "Składniki"
     public void partsClicked(View view) {
         Intent intent = new Intent(MainActivity.this, ResourceList.class);
         startActivity(intent);
     }
-
-    public void shoppingClicked(View view) {
-    }
-
+    // Klikniecie w przycisk "Wyjście"
     public void quitClicked(View view) {
         finish();
         System.exit(0);
     }
-
+    // Wyczyszczenie calej bazy danych
     public void clearData(View view) {
         databaseSystem.clearDatabase();
     }
